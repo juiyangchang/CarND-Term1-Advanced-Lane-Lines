@@ -14,8 +14,7 @@ The goals / steps of this project are the following:
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
 [//]: # (Image References)
-
-[image1]: ./output_images/camera_calibration.png" Undistorted"
+[image1]: ./output_images/camera_calibration.png "Undistorted"
 [image2]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
@@ -23,9 +22,8 @@ The goals / steps of this project are the following:
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
-## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
-
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.
+## Rubric Points
+### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/571/view) individually and describe how I addressed each point in my implementation.
 
 ---
 
@@ -41,4 +39,5 @@ You're reading it!
 I started by creating the object points in the chessboard `objp`.
 Then the chessboard corners are found from all but the first image
 in the `camera\_cal` folder.  Each images is first converted from RGB to Gray scale, then the chessboard corner image points are found using `cv2.findChessboardCorners`. The object points and image points of each images are collected in two python lists and fed into the function `calibrate`, defined in `ImageProcessing/process.py`.  This function returns the camera matrix and distortion coefficients.  The camera matrix and the distortion coefficients are then passed to the function `undist` to undistort the image.
+Below is an example of undistorted image, in which the origin image was not used in calibration process.
 ![Undistorted Image][image1]
