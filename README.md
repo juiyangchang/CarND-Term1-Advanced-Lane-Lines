@@ -38,6 +38,6 @@ You're reading it!
 #### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 I started by creating the object points in the chessboard `objp`.
 Then the chessboard corners are found from all but the first image
-in the `camera\_cal` folder.  Each images is first converted from RGB to Gray scale, then the chessboard corner image points are found using `cv2.findChessboardCorners`. The object points and image points of each images are collected in two python lists and fed into the function `calibrate`, defined in `ImageProcessing/process.py`.  This function returns the camera matrix and distortion coefficients.  The camera matrix and the distortion coefficients are then passed to the function `undist` to undistort the image.
+in the `camera_cal` folder.  Each images is first converted from RGB to Gray scale, then the chessboard corner image points are found using `cv2.findChessboardCorners`. The object points and image points of each images are collected in two python lists and fed into the function `calibrate`, defined in `ImageProcessing/process.py`.  This function returns the camera matrix and distortion coefficients.  The camera matrix and the distortion coefficients are then passed to the function `undist` to undistort the image.
 Below is an example of undistorted image, in which the origin image was not used in calibration process.
 ![Undistorted Image][image1]
