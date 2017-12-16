@@ -1,6 +1,6 @@
-**Advanced Lane Finding Project**
+# **Advanced Lane Finding Project**
 
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)![Language](https://img.shields.io/badge/language-Python-green.svg)
+[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)  ![Language](https://img.shields.io/badge/language-Python-green.svg)
 
 The goals / steps of this project are the following:
 
@@ -15,7 +15,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/undistort_output.png "Undistorted"
+[image1]: ./output_images/camera_calibration.png" Undistorted"
 [image2]: ./test_images/test1.jpg "Road Transformed"
 [image3]: ./examples/binary_combo_example.jpg "Binary Example"
 [image4]: ./examples/warped_straight_lines.jpg "Warp Example"
@@ -38,4 +38,7 @@ You're reading it!
 ### Camera Calibration
 
 #### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
-
+I started by creating the object points in the chessboard `objp`.
+Then the chessboard corners are found from all but the first image
+in the `camera\_cal` folder.  Each images is first converted from RGB to Gray scale, then the chessboard corner image points are found using `cv2.findChessboardCorners`. The object points and image points of each images are collected in two python lists and fed into the function `calibrate`, defined in `ImageProcessing/process.py`.  This function returns the camera matrix and distortion coefficients.  The camera matrix and the distortion coefficients are then passed to the function `undist` to undistort the image.
+![Undistorted Image][image1]
