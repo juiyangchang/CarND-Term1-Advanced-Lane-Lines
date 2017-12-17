@@ -19,7 +19,7 @@ The goals / steps of this project are the following:
 [image3]: ./output_images/thresholding.png "Thresholded Binary Image"
 [image4]: ./output_images/perspective_transform.png "Warped Image"
 [image5]: ./output_images/polynomial_fit.png "Fitted Polynomial"
-[image6]: ./examples/example_output.jpg "Output"
+[image6]: ./output_images/pipeline_output.png "Output"
 [video1]: ./project_video.mp4 "Video"
 
 ## Rubric Points
@@ -106,10 +106,42 @@ from the bottom. These procedures are repeated until the ninth window.  In the f
 depict the windows. The red pixels are the pixels included in the list of points that will be fitted to find the left
 curve, while the blue pixels will be used to find the right curve.
 
-Finally, to 
+Finally, to find the quadratic functions for the cuves, we collect the y and x coordinates of the pixels into
+two numpy arrays `y` and `x`.  We then fit `x` as a quadratic function of `y` with `np.polyfit(y, x, deg=2)`. The fitted quadratic functions are plotted in yellow in the bottom panel of the figure.
+
 
 ![alt text][image5]
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+The radius of curvature of the lane is calcuated in `scan_find_lane()` in `ImageProcessing/process.py`.  
+
+The main idea is that we can use the coefficients of the fitted quadratic function to compute the raidus of curvature, followying the equation noted in this [page](https://www.intmath.com/applications-differentiation/8-radius-curvature.php).  Here instead of using number of pixels as the distance unit, we need to use real world distance in meters.  I followed the class note to set the meters per pixel in the vertical direction to `30/720` meters per pixel.  As for the horizontal direction, I used the distance between the fitted lines at the bottom of the picture `lx` and `rx` and set the conversion to `3.7 / (rx - lx)` meters per distance.  Once we converted the the pixel coordinates be of unit meters, we can fit the
+quadratic polynomials again and use their coefficients to calculate the radius of curvature. 
+
+As for the center position of the vehicle, I used the distance between  the x axis mid point of the picture 
+and the mid point of the two fitted curves
+at the bottom of the picture to compute the relative location of the car.
+
+#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+
+The whole pipeline is collected in the `pipeline()`
+function defined in `ImageProcessing/pipeline.py`.  Below is the output image of my pipeline.
+
+![alt text][image6]
+---
+
+### Pipeline (video)
+
+#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/kRrMwEymS-0/0.jpg)](https://www.youtube.com/watch?v=kRrMwEymS-0"")
+
+---
+
+### Discussion
+
+#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+
+Some shadows on the road can be of gradient with similar strength with the lane line and as saturated in S channel.
+These can be 
