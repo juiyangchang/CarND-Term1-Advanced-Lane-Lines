@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from collections import deque
+import matplotlib.pyplot as plt
 
 def calibrate(img, objpoints, imgpoints):
     '''
@@ -212,12 +213,22 @@ def perspective_transform(img, src, dst):
 
     return warped, M, Minv
 
-def scan_find_lane(warped, nwindows=9, margin=100, minpix=50):
+def scan_find_lane(warped, nwindows=9, margin=100, minpix=50, plot=False):
     h, w = warped.shape[0], warped.shape[1]
 
     out_img = np.dstack((warped, warped, warped))*255
 
     histogram = np.sum(warped[h//2:,:], axis=0)
+    if plot:
+        fig, ax = plt.subplots(2, 1, figsize=(6, 8), subplot_kw={'xticks': [], 'yticks': []})
+        ax[0].plot(histogram)
+        ax[0].set_xlabel('Pixel Position')
+        ax[0].set_ylabel('Counts')
+        ax[0].set_xticks(np.arange(0, w, 200))
+        ax[0].set_yticks(np.arange(0, np.max(histogram), 50))
+        ax[0].set_xlim((0, w))
+        ax[0].set_ylim((0, np.max(histogram)))
+
     # Find the peak of the left and right halves of the histogram
     # # These will be the starting point for the left and right lines
     midpoint = w // 2
@@ -328,6 +339,11 @@ def scan_find_lane(warped, nwindows=9, margin=100, minpix=50):
     #print(left_curverad, 'm', right_curverad, 'm')
     out_img[nonzeroy[left_lane_inds], nonzerox[left_lane_inds]] = [255, 0, 0]
     out_img[nonzeroy[right_lane_inds], nonzerox[right_lane_inds]] = [0, 0, 255]
+
+    if plot:
+        ax[1].imshow(out_img)
+        ax[1].plot(return_vars['left_fit_x'], return_vars['fit_y'], c='yellow', lw=2)
+        ax[1].plot(return_vars['right_fit_x'], return_vars['fit_y'], c='yellow', lw=2);
     
     return return_vars, out_img
 
@@ -469,7 +485,7 @@ def drawPoly(img, leftx, lefty, rightx, righty, M = None):
     left_pts = np.c_[leftx, lefty].astype(np.int32)
     right_pts = np.c_[rightx, righty].astype(np.int32)
     pts = np.hstack((left_pts, right_pts))
-    cv2.polylines(mix_img, [left_pts.reshape((-1,1,2))], isClosed=False, color=(0,0,255), thickness=10)
+    cv2.polylines(mix_img, [left_pts.reshape((-1,1,2))], isClosed=False, color=(255,0,0), thickness=10)
     cv2.polylines(mix_img, [right_pts.reshape((-1,1,2))], isClosed=False, color=(0,0,255), thickness=10) 
     cv2.fillPoly(mix_img, [pts.reshape((-1,1,2))], (30, 255, 90))
 

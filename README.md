@@ -88,7 +88,25 @@ Below I show the thresholded image and perspective transformed image side by sid
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+The procedure for fitting a quadratic function to the pixels in the binary thresholded image is implemented in the 
+function `scan_find_lane()` defined in `ImageProcessing/process.py`.  
+
+I follow the procedure described in the lecture. To start, I computed the vertical counts of onset pixels from 
+vertical mid point to bottom of the binary image in each horizontal pixel location.
+The counts are shown in the top panel in the figure below.  The pixel points with the largest counts on the left and
+right halfs are then used intial center points of the left and right windows.  The center points can be seen as shown
+in the center point x coordinates of the bottom green rectangles in the bottom panel.
+
+The image is vertically divided into nine windows. We start scanning from the center points we mentioned before from
+the bottom windows. The windows are of width 300.  The onset pixels in the left window is included in the list of points that will be
+used for fitting the left quadratic function, we also keep another list for the right lane.  We also count the number
+onset pixels in the windows. If the number exceeds 50, we will move the center point of the next window to the
+mean of x coordinates the onset pixels in the window.  We then repeat the procedure for the second vertical window
+from the bottom. These procedures are repeated until the ninth window.  In the figure, the green rectangles
+depict the windows. The red pixels are the pixels included in the list of points that will be fitted to find the left
+curve, while the blue pixels will be used to find the right curve.
+
+Finally, to 
 
 ![alt text][image5]
 
