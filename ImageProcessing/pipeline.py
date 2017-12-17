@@ -51,13 +51,11 @@ def pipeline(img):
             warped = cv2.polylines(warped, [left_pts.reshape((-1,1,2))], isClosed=False, color=(255), thickness=2)
             warped = cv2.polylines(warped, [right_pts.reshape((-1,1,2))], isClosed=False, color=(255), thickness=2)           
        
-        return_vars, outimg = proc.scan_find_lane(warped, margin = 150)
+        return_vars, outimg = proc.scan_find_lane(warped, margin = 120)
         
         if return_vars['left_found']:
             if len(pipeline.left_lane.recent_x_fitted) == 0 or \
                     pipeline.left_lane.sanity_check(return_vars['left_fit_x']):
-                #if len(pipeline.left_lane.recent_x_fitted) != 0:
-                #    print('left', np.max(np.abs(pipeline.left_lane.current_x_fitted - return_vars['left_fit_x'])))
                 l_found = True
                 
         elif i == 1:
@@ -66,8 +64,6 @@ def pipeline(img):
         if return_vars['right_found']:
             if len(pipeline.right_lane.recent_x_fitted) == 0 or \
                     pipeline.right_lane.sanity_check(return_vars['right_fit_x']):
-                #if len(pipeline.right_lane.recent_x_fitted) != 0:
-                #    print('right', np.max(np.abs(pipeline.right_lane.current_x_fitted - return_vars['right_fit_x'])))
                 r_found = True
                 
         elif i == 1:
@@ -77,7 +73,7 @@ def pipeline(img):
             poly_out = proc.drawPoly(img, return_vars['left_fit_x'], return_vars['fit_y'], 
                                      return_vars['right_fit_x'], return_vars['fit_y'], M=pipeline.Minv)    
             out = proc.addText(poly_out, return_vars['left_curverad'], return_vars['right_curverad'], 
-                               M=pipeline.Minv)
+                               return_vars['center_loc'], M=pipeline.Minv)
             
             pipeline.left_lane.update(True, return_vars['left_fit_x'], return_vars['left_fit_eq'], 
                                       return_vars['left_curverad'])
@@ -87,9 +83,13 @@ def pipeline(img):
             return out
         elif i == 1:  
             y_pts = np.linspace(0, pipeline.img_size[1]-1, pipeline.img_size[1])
+            xm_per_pix = 3.7 / (pipeline.right_lane.current_x_fitted[-1] - 
+                                pipeline.left_lane.current_x_fitted[-1])
+            center_loc = (-(pipeline.right_lane.current_x_fitted[-1] 
+                        + pipeline.left_lane.current_x_fitted[-1]) // 2 + img.shape[1] // 2) * xm_per_pix
             poly_out = proc.drawPoly(img, pipeline.left_lane.current_x_fitted, y_pts, 
                                      pipeline.right_lane.current_x_fitted, y_pts, M=pipeline.Minv)    
             out = proc.addText(poly_out, pipeline.left_lane.radius_of_curvature, pipeline.right_lane.radius_of_curvature,
-                               M=pipeline.Minv)
+                               center_loc, M=pipeline.Minv)
             out = cv2.resize(out,None,fx=0.66, fy=0.66, interpolation = cv2.INTER_AREA)
     return out

@@ -334,6 +334,8 @@ def scan_find_lane(warped, nwindows=9, margin=100, minpix=50, plot=False):
 
         return_vars['left_curverad'] = left_curverad
         return_vars['right_curverad'] = right_curverad
+
+        return_vars['center_loc'] = (-(right_fitx[-1] + left_fitx[-1]) // 2 + w // 2) * xm_per_pix
     
     # Now our radius of curvature is in meters
     #print(left_curverad, 'm', right_curverad, 'm')
@@ -496,12 +498,20 @@ def drawPoly(img, leftx, lefty, rightx, righty, M = None):
 
     return img
 
-def addText(img, left_curverad, right_curverad, M = None):
+def addText(img, left_curverad, right_curverad, center_point, M = None):
     h, w = img.shape[0], img.shape[1]
     mix_img = np.zeros_like(img)
-    out_text = 'Radius of Curvature = {:.0f} (m)'.format(np.maximum(left_curverad, right_curverad))
+    out_text = 'Radius of Curvature = {:.0f} m'.format(np.maximum(left_curverad, right_curverad))
     cv2.putText(mix_img, text = out_text, 
         org = (w//20,h//10), fontFace = cv2.FONT_HERSHEY_SIMPLEX, fontScale=2, thickness=3, color=(255,255,255))
+
+    if center_point < 0:
+        out_text = 'Vehicle is {:.2f} m left of center'.format(np.abs(center_point))
+    else:
+        out_text = 'Vehicle is {:.2f} m right of center'.format(np.abs(center_point))
+    cv2.putText(mix_img, text = out_text, 
+        org = (w//20,h//5), fontFace = cv2.FONT_HERSHEY_SIMPLEX, fontScale=2, thickness=3, color=(255,255,255))
+
     if M is None:
         mix_img = cv2.warpPerspective(mix_img, M, mix_img.shape[1::-1], flags=cv2.INTER_LINEAR)
 
