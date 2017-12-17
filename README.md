@@ -117,11 +117,13 @@ two numpy arrays `y` and `x`.  We then fit `x` as a quadratic function of `y` wi
 The radius of curvature of the lane is calcuated in `scan_find_lane()` in `ImageProcessing/process.py`.  
 
 The main idea is that we can use the coefficients of the fitted quadratic function to compute the raidus of curvature, followying the equation noted in this [page](https://www.intmath.com/applications-differentiation/8-radius-curvature.php).  Here instead of using number of pixels as the distance unit, we need to use real world distance in meters.  I followed the class note to set the meters per pixel in the vertical direction to `30/720` meters per pixel.  As for the horizontal direction, I used the distance between the fitted lines at the bottom of the picture `lx` and `rx` and set the conversion to `3.7 / (rx - lx)` meters per distance.  Once we converted the the pixel coordinates be of unit meters, we can fit the
-quadratic polynomials again and use their coefficients to calculate the radius of curvature. 
+quadratic polynomials again and use their coefficients to calculate the radius of curvature.  The whole process of
+these calcuations can be found from lines 322 to 336 in my code in `ImageProcessing/process.py`.
 
 As for the center position of the vehicle, I used the distance between  the x axis mid point of the picture 
 and the mid point of the two fitted curves
-at the bottom of the picture to compute the relative location of the car.
+at the bottom of the picture to compute the relative location of the car. The computation of this can be found at
+line 338 of my code in `ImageProcessing/process.py`.
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
