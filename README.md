@@ -136,13 +136,17 @@ function defined in `ImageProcessing/pipeline.py`.  Below is the output image of
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
 Below is a link to my project video results:
+
 [![Project Video](http://img.youtube.com/vi/opuoJeqBzUA/0.jpg)](https://youtu.be/opuoJeqBzUA "Project Video")
+
 you can also find it in this [repo](output_vides/project_video.mp4).
 
 
 Below is a link to my challenge video results:
+
 [![Challenge Video](http://img.youtube.com/vi/kRrMwEymS-0/0.jpg)](https://www.youtu.be/kRrMwEymS-0 "Challenge Vide")
-you can also find it in this [repo](output_vides/challenge_video.mp4)
+
+you can also find it in this [repo](output_vides/challenge_video.mp4).
 
 ---
 
