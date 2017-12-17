@@ -37,7 +37,7 @@ You're reading it!
 
 #### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 The whole pipeline for camera calibration and undistortion can be found
-in section **Camera Calibration** in the Ipython notebook.
+in section **Camera Calibration** in the [Ipython notebook](Advanced%20Lane%20Finding%20Project.ipynb).
 
 I started by creating the object points `objp` in the chessboard.
 Then the chessboard corner image points are found from all but the first image

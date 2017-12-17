@@ -1,0 +1,8 @@
+File Name                       Description
+-----------------------------------------------------------------------------
+camera_calibration.png      example of distortion corrected chessboard image
+pipeline_undistort.png      example of distortion corrected image on road
+thresholding.png            example of binary thresholded image of gradient and color channels
+perspective_transform.png   example of perspective transformed (warped) binary thresholded image
+polynomial_fit.png          example of polynomial fit to the thresholded image
+pipeline_output.png         example of pipeline output
