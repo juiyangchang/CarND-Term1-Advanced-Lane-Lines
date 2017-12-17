@@ -98,7 +98,7 @@ right halfs are then used intial center points of the left and right windows.  T
 in the center point x coordinates of the bottom green rectangles in the bottom panel.
 
 The image is vertically divided into nine windows. We start scanning from the center points we mentioned before from
-the bottom windows. The windows are of width 300.  The onset pixels in the left window is included in the list of points that will be
+the bottom windows. The windows are of width 240.  The onset pixels in the left window is included in the list of points that will be
 used for fitting the left quadratic function, we also keep another list for the right lane.  We also count the number
 onset pixels in the windows. If the number exceeds 50, we will move the center point of the next window to the
 mean of x coordinates the onset pixels in the window.  We then repeat the procedure for the second vertical window
@@ -135,13 +135,24 @@ function defined in `ImageProcessing/pipeline.py`.  Below is the output image of
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/kRrMwEymS-0/0.jpg)](https://www.youtube.com/watch?v=kRrMwEymS-0"")
+Below is a link to my project video results:
+[![Project Video](http://img.youtube.com/vi/opuoJeqBzUA/0.jpg)](https://youtu.be/opuoJeqBzUA")
+you can also find it in this [repo](output_vides/project_video.mp4).
 
+Below is a link to my challenge video results:
+[![Challenge Video](http://img.youtube.com/vi/kRrMwEymS-0/0.jpg)](https://www.youtu.be/kRrMwEymS-0"")
+you can also find it in this [repo](output_vides/challenge_video.mp4)
 ---
 
 ### Discussion
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Some shadows on the road can be of gradient with similar strength with the lane line and as saturated in S channel.
-These can be 
+Some shadows on the road can be of gradient with similar strength with the lane line and as saturated in S channel. Sometimes shadows or strong sun lit can completely block the road. Another challenge is that
+roads can be really curvy as in the harder challenge video, which make it difficult for the scanning procedure to recenter the scanning window.  
+
+In my pipeline, switching to B channel of the LAB color space helped make the procedure more robust.  I also used lane lines fitted in the previous five video frame to create a mask to fileter out distant pixels from the lane line.
+If the procedure failes for the current frame, I will just draw the lines detected in the previous video frame.
+
+However my pipeline is not robust enough to find lane line in the harder challenge video. I think using image contrast strengthening procedures like histogram equalization and Kalman filtering or similar filtering procedures might be helpeful to find the lane lines. We can also use locations of other cars/motocycles to make
+an educated guess of the lane lines.  If other sensor reads is available, we can fushion those into our pipeline to make a better detection.
